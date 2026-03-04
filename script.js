@@ -270,7 +270,7 @@ if (pricingSwitch && priceValues.length) {
   updatePricing();
 }
 
-let refreshShowcaseMedia = () => {};
+let refreshShowcaseMedia = () => { };
 const tabButtons = [...document.querySelectorAll(".tab-btn")];
 const tabPanels = [...document.querySelectorAll(".tab-panel")];
 
@@ -317,7 +317,7 @@ if (showcaseVideos.length) {
     const activeVideo = document.querySelector(".tab-panel.is-active video");
     if (activeVideo) {
       activeVideo.classList.remove("is-paused");
-      activeVideo.play().catch(() => {});
+      activeVideo.play().catch(() => { });
     }
   };
 
@@ -471,328 +471,153 @@ if (contactForm && formMessage) {
 }
 
 window.setTimeout(() => {
-const webglCanvas = document.getElementById("webglScene");
-const sceneModeButtons = [...document.querySelectorAll("[data-scene-mode]")];
-const sceneIntensityInput = document.getElementById("sceneIntensity");
-const sceneModes = ["pulse", "flux", "wire"];
+  const webglCanvas = document.getElementById("webglScene");
+  const sceneModeButtons = [...document.querySelectorAll("[data-scene-mode]")];
+  const sceneIntensityInput = document.getElementById("sceneIntensity");
+  const sceneModes = ["pulse", "flux", "wire"];
 
-if (webglCanvas && window.THREE && !prefersReducedMotion && !lowEndDevice) {
-  const THREE = window.THREE;
-  const container = webglCanvas.parentElement;
-  const renderer = new THREE.WebGLRenderer({
-    canvas: webglCanvas,
-    antialias: true,
-    alpha: true,
-    powerPreference: "high-performance",
-  });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.4));
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 120);
-  camera.position.set(0, 0, 10);
-
-  const root = new THREE.Group();
-  scene.add(root);
-
-  const ambientLight = new THREE.AmbientLight(0xffc28f, 0.8);
-  const warmLight = new THREE.PointLight(0xff7f39, 1.4, 38);
-  warmLight.position.set(5.5, 4, 8);
-  const coolLight = new THREE.PointLight(0x66cfff, 1.1, 44);
-  coolLight.position.set(-6.2, -3, 10);
-  scene.add(ambientLight, warmLight, coolLight);
-
-  const coreGeometry = new THREE.TorusKnotGeometry(1.45, 0.42, 160, 24);
-  const coreMaterial = new THREE.MeshStandardMaterial({
-    color: 0xff9858,
-    metalness: 0.66,
-    roughness: 0.24,
-    emissive: 0x411707,
-    emissiveIntensity: 0.65,
-  });
-  const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
-
-  const shellGeometry = new THREE.IcosahedronGeometry(2.65, 1);
-  const shellMaterial = new THREE.MeshBasicMaterial({
-    color: 0x7ad8ff,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.24,
-  });
-  const shellMesh = new THREE.Mesh(shellGeometry, shellMaterial);
-
-  const ringGeometry = new THREE.TorusGeometry(3.35, 0.03, 18, 160);
-  const ringMaterial = new THREE.MeshBasicMaterial({
-    color: 0xffcaa3,
-    transparent: true,
-    opacity: 0.34,
-  });
-  const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
-  ringMesh.rotation.x = 1.08;
-
-  root.add(coreMesh, shellMesh, ringMesh);
-
-  const particleCount = deviceMemory >= 8 ? 860 : 640;
-  const particlePositions = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount; i += 1) {
-    const i3 = i * 3;
-    const radius = 4 + Math.random() * 8.2;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    particlePositions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-    particlePositions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-    particlePositions[i3 + 2] = radius * Math.cos(phi);
-  }
-
-  const particleGeometry = new THREE.BufferGeometry();
-  particleGeometry.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-  const particleMaterial = new THREE.PointsMaterial({
-    color: 0xffcfab,
-    size: 0.043,
-    transparent: true,
-    opacity: 0.62,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-  });
-  const particleField = new THREE.Points(particleGeometry, particleMaterial);
-  scene.add(particleField);
-
-  const pointerTarget = { x: 0, y: 0 };
-  let currentSceneMode = "pulse";
-  let intensity = Number.parseInt(sceneIntensityInput?.value || "88", 10) / 100;
-  let sceneVisible = false;
-  let pageVisible = !document.hidden;
-  let rafId = 0;
-  let isAnimating = false;
-
-  const resizeRenderer = () => {
-    const width = Math.max(240, container?.clientWidth || window.innerWidth);
-    const height = Math.max(240, container?.clientHeight || Math.floor(window.innerHeight * 0.75));
-    renderer.setSize(width, height, false);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-  };
-
-  const updateModeStyles = (mode) => {
-    sceneModeButtons.forEach((button) => {
-      button.classList.toggle("is-active", button.dataset.sceneMode === mode);
-    });
-
-    document.body.classList.toggle("scene-wire", mode === "wire");
-
-    if (mode === "wire") {
-      coreMaterial.color.setHex(0x88dbff);
-      coreMaterial.emissive.setHex(0x0f2642);
-      coreMaterial.wireframe = true;
-      shellMaterial.opacity = 0.5;
-      shellMaterial.color.setHex(0x93e3ff);
-      ringMaterial.color.setHex(0x8ad6ff);
-      particleMaterial.color.setHex(0xb8ebff);
-    } else if (mode === "flux") {
-      coreMaterial.color.setHex(0xffaa63);
-      coreMaterial.emissive.setHex(0x53210a);
-      coreMaterial.wireframe = false;
-      shellMaterial.opacity = 0.3;
-      shellMaterial.color.setHex(0x7dd7ff);
-      ringMaterial.color.setHex(0xffd6b3);
-      particleMaterial.color.setHex(0xffcda8);
-    } else {
-      coreMaterial.color.setHex(0xff9858);
-      coreMaterial.emissive.setHex(0x411707);
-      coreMaterial.wireframe = false;
-      shellMaterial.opacity = 0.24;
-      shellMaterial.color.setHex(0x7ad8ff);
-      ringMaterial.color.setHex(0xffcaa3);
-      particleMaterial.color.setHex(0xffcfab);
-    }
-  };
-
-  const setSceneMode = (mode, notify = true) => {
-    if (!sceneModes.includes(mode)) return;
-    currentSceneMode = mode;
-    updateModeStyles(mode);
-    if (notify) {
-      announceSceneToast(`3D mode: ${mode.toUpperCase()}`);
-    }
-  };
-
-  sceneModeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setSceneMode(button.dataset.sceneMode || "pulse");
-    });
-  });
-
-  if (sceneIntensityInput) {
-    sceneIntensityInput.addEventListener("input", () => {
-      intensity = Number.parseInt(sceneIntensityInput.value || "88", 10) / 100;
-      announceSceneToast(`Intensity ${Math.round(intensity * 100)}%`);
-    });
-  }
-
-  window.addEventListener("keydown", (event) => {
-    if (event.key.toLowerCase() !== "g") return;
-
-    const activeTag = document.activeElement?.tagName;
-    if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
-
-    const currentIndex = sceneModes.indexOf(currentSceneMode);
-    const nextMode = sceneModes[(currentIndex + 1) % sceneModes.length];
-    setSceneMode(nextMode);
-  });
-
-  if (!coarsePointer) {
-    window.addEventListener("pointermove", (event) => {
-      pointerTarget.x = (event.clientX / window.innerWidth) * 2 - 1;
-      pointerTarget.y = (event.clientY / window.innerHeight) * 2 - 1;
-    });
-  }
-
-  const shouldAnimateScene = () => sceneVisible && pageVisible;
-  let isDisposed = false;
-  const animateScene = (now) => {
-    if (isDisposed) return;
-    if (!shouldAnimateScene()) {
-      isAnimating = false;
-      return;
-    }
-
-    const t = now * 0.001;
-    const pulse = 0.5 + 0.5 * Math.sin(t * 1.8);
-    const modeMultiplier = currentSceneMode === "flux" ? 1.55 : currentSceneMode === "wire" ? 1.22 : 1;
-    const speed = (0.85 + intensity * 1.15) * modeMultiplier;
-
-    root.position.x += (pointerTarget.x * 0.75 - root.position.x) * 0.045;
-    root.position.y += (-pointerTarget.y * 0.52 - root.position.y) * 0.045;
-
-    coreMesh.rotation.x += 0.0035 * speed;
-    coreMesh.rotation.y += 0.0046 * speed;
-    coreMesh.rotation.z += 0.0016 * speed;
-    coreMesh.scale.setScalar(1 + pulse * 0.05 * intensity);
-
-    shellMesh.rotation.x -= 0.0013 * speed;
-    shellMesh.rotation.y += 0.0019 * speed;
-    shellMesh.scale.setScalar(1.02 + pulse * 0.035);
-
-    ringMesh.rotation.z += 0.002 * speed;
-    ringMesh.rotation.y = Math.sin(t * 0.5) * 0.4;
-
-    particleField.rotation.y += 0.0008 * speed;
-    particleField.rotation.x -= 0.00035 * speed;
-    particleMaterial.size = 0.032 + intensity * 0.02;
-    particleMaterial.opacity = 0.36 + intensity * 0.35;
-
-    renderer.render(scene, camera);
-    rafId = requestAnimationFrame(animateScene);
-  };
-
-  const startScene = () => {
-    if (isAnimating || isDisposed || !shouldAnimateScene()) return;
-    isAnimating = true;
-    rafId = requestAnimationFrame(animateScene);
-  };
-
-  const stopScene = () => {
-    if (!isAnimating) return;
-    cancelAnimationFrame(rafId);
-    isAnimating = false;
-  };
-
-  resizeRenderer();
-  setSceneMode(currentSceneMode, false);
-  window.addEventListener("resize", resizeRenderer);
-  if (container) {
-    const sceneObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          sceneVisible = entry.isIntersecting;
-        });
-        if (shouldAnimateScene()) {
-          startScene();
-        } else {
-          stopScene();
-        }
-      },
-      { threshold: 0.12 }
-    );
-    sceneObserver.observe(container);
-  }
-
-  document.addEventListener("visibilitychange", () => {
-    pageVisible = !document.hidden;
-    if (shouldAnimateScene()) {
-      startScene();
-    } else {
-      stopScene();
-    }
-  });
-
-  window.addEventListener("beforeunload", () => {
-    isDisposed = true;
-    stopScene();
-    renderer.dispose();
-    coreGeometry.dispose();
-    coreMaterial.dispose();
-    shellGeometry.dispose();
-    shellMaterial.dispose();
-    ringGeometry.dispose();
-    ringMaterial.dispose();
-    particleGeometry.dispose();
-    particleMaterial.dispose();
-  });
-} else if (webglCanvas && !prefersReducedMotion && !lowEndDevice) {
-  const ctx = webglCanvas.getContext("2d");
-
-  if (ctx) {
+  if (webglCanvas && window.THREE && !prefersReducedMotion && !lowEndDevice) {
+    const THREE = window.THREE;
     const container = webglCanvas.parentElement;
-    const fallbackModes = ["pulse", "flux", "wire"];
-    const fallbackPointCount = lowEndDevice ? 280 : 520;
-    const points = Array.from({ length: fallbackPointCount }, () => ({
-      x: (Math.random() - 0.5) * 10,
-      y: (Math.random() - 0.5) * 8,
-      z: Math.random() * 12 + 1,
-      seed: Math.random() * Math.PI * 2,
-      size: Math.random() * 1.4 + 0.45,
-    }));
+    const renderer = new THREE.WebGLRenderer({
+      canvas: webglCanvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.4));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 120);
+    camera.position.set(0, 0, 10);
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    const ambientLight = new THREE.AmbientLight(0xffc28f, 0.8);
+    const warmLight = new THREE.PointLight(0xff7f39, 1.4, 38);
+    warmLight.position.set(5.5, 4, 8);
+    const coolLight = new THREE.PointLight(0x66cfff, 1.1, 44);
+    coolLight.position.set(-6.2, -3, 10);
+    scene.add(ambientLight, warmLight, coolLight);
+
+    const coreGeometry = new THREE.TorusKnotGeometry(1.45, 0.42, 160, 24);
+    const coreMaterial = new THREE.MeshStandardMaterial({
+      color: 0xff9858,
+      metalness: 0.66,
+      roughness: 0.24,
+      emissive: 0x411707,
+      emissiveIntensity: 0.65,
+    });
+    const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+
+    const shellGeometry = new THREE.IcosahedronGeometry(2.65, 1);
+    const shellMaterial = new THREE.MeshBasicMaterial({
+      color: 0x7ad8ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.24,
+    });
+    const shellMesh = new THREE.Mesh(shellGeometry, shellMaterial);
+
+    const ringGeometry = new THREE.TorusGeometry(3.35, 0.03, 18, 160);
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffcaa3,
+      transparent: true,
+      opacity: 0.34,
+    });
+    const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+    ringMesh.rotation.x = 1.08;
+
+    root.add(coreMesh, shellMesh, ringMesh);
+
+    const particleCount = deviceMemory >= 8 ? 860 : 640;
+    const particlePositions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i += 1) {
+      const i3 = i * 3;
+      const radius = 4 + Math.random() * 8.2;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      particlePositions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+      particlePositions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      particlePositions[i3 + 2] = radius * Math.cos(phi);
+    }
+
+    const particleGeometry = new THREE.BufferGeometry();
+    particleGeometry.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
+    const particleMaterial = new THREE.PointsMaterial({
+      color: 0xffcfab,
+      size: 0.043,
+      transparent: true,
+      opacity: 0.62,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const particleField = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particleField);
 
     const pointerTarget = { x: 0, y: 0 };
-    let mode = "pulse";
+    let currentSceneMode = "pulse";
     let intensity = Number.parseInt(sceneIntensityInput?.value || "88", 10) / 100;
-    let width = 0;
-    let height = 0;
     let sceneVisible = false;
     let pageVisible = !document.hidden;
     let rafId = 0;
     let isAnimating = false;
 
-    const resizeCanvas = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = Math.max(260, container?.clientWidth || window.innerWidth);
-      height = Math.max(260, container?.clientHeight || Math.floor(window.innerHeight * 0.7));
-      webglCanvas.width = Math.floor(width * dpr);
-      webglCanvas.height = Math.floor(height * dpr);
-      webglCanvas.style.width = `${width}px`;
-      webglCanvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const resizeRenderer = () => {
+      const width = Math.max(240, container?.clientWidth || window.innerWidth);
+      const height = Math.max(240, container?.clientHeight || Math.floor(window.innerHeight * 0.75));
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
     };
 
-    const updateFallbackModeStyles = (nextMode) => {
+    const updateModeStyles = (mode) => {
       sceneModeButtons.forEach((button) => {
-        button.classList.toggle("is-active", button.dataset.sceneMode === nextMode);
+        button.classList.toggle("is-active", button.dataset.sceneMode === mode);
       });
-      document.body.classList.toggle("scene-wire", nextMode === "wire");
+
+      document.body.classList.toggle("scene-wire", mode === "wire");
+
+      if (mode === "wire") {
+        coreMaterial.color.setHex(0x88dbff);
+        coreMaterial.emissive.setHex(0x0f2642);
+        coreMaterial.wireframe = true;
+        shellMaterial.opacity = 0.5;
+        shellMaterial.color.setHex(0x93e3ff);
+        ringMaterial.color.setHex(0x8ad6ff);
+        particleMaterial.color.setHex(0xb8ebff);
+      } else if (mode === "flux") {
+        coreMaterial.color.setHex(0xffaa63);
+        coreMaterial.emissive.setHex(0x53210a);
+        coreMaterial.wireframe = false;
+        shellMaterial.opacity = 0.3;
+        shellMaterial.color.setHex(0x7dd7ff);
+        ringMaterial.color.setHex(0xffd6b3);
+        particleMaterial.color.setHex(0xffcda8);
+      } else {
+        coreMaterial.color.setHex(0xff9858);
+        coreMaterial.emissive.setHex(0x411707);
+        coreMaterial.wireframe = false;
+        shellMaterial.opacity = 0.24;
+        shellMaterial.color.setHex(0x7ad8ff);
+        ringMaterial.color.setHex(0xffcaa3);
+        particleMaterial.color.setHex(0xffcfab);
+      }
     };
 
-    const setFallbackMode = (nextMode, notify = true) => {
-      if (!fallbackModes.includes(nextMode)) return;
-      mode = nextMode;
-      updateFallbackModeStyles(nextMode);
+    const setSceneMode = (mode, notify = true) => {
+      if (!sceneModes.includes(mode)) return;
+      currentSceneMode = mode;
+      updateModeStyles(mode);
       if (notify) {
-        announceSceneToast(`3D mode: ${nextMode.toUpperCase()}`);
+        announceSceneToast(`3D mode: ${mode.toUpperCase()}`);
       }
     };
 
     sceneModeButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        setFallbackMode(button.dataset.sceneMode || "pulse");
+        setSceneMode(button.dataset.sceneMode || "pulse");
       });
     });
 
@@ -809,8 +634,9 @@ if (webglCanvas && window.THREE && !prefersReducedMotion && !lowEndDevice) {
       const activeTag = document.activeElement?.tagName;
       if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
 
-      const currentIndex = fallbackModes.indexOf(mode);
-      setFallbackMode(fallbackModes[(currentIndex + 1) % fallbackModes.length]);
+      const currentIndex = sceneModes.indexOf(currentSceneMode);
+      const nextMode = sceneModes[(currentIndex + 1) % sceneModes.length];
+      setSceneMode(nextMode);
     });
 
     if (!coarsePointer) {
@@ -820,172 +646,346 @@ if (webglCanvas && window.THREE && !prefersReducedMotion && !lowEndDevice) {
       });
     }
 
-    const drawCore = (time, speed) => {
-      const cx = width * 0.52 + pointerTarget.x * 34;
-      const cy = height * 0.46 - pointerTarget.y * 24;
-      const ringPulse = 0.82 + Math.sin(time * 2.2) * 0.11;
-      const ringRadius = 58 + ringPulse * 32 * intensity;
-
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(time * 0.45 * speed);
-      ctx.strokeStyle = mode === "wire" ? "rgba(148, 222, 255, 0.75)" : "rgba(255, 184, 122, 0.8)";
-      ctx.lineWidth = mode === "wire" ? 1.2 : 1.7;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, ringRadius, ringRadius * 0.55, 0, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.rotate(time * 0.24 * speed);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, ringRadius * 0.66, ringRadius * 0.28, Math.PI / 2, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.fillStyle = mode === "wire" ? "rgba(114, 214, 255, 0.55)" : "rgba(255, 146, 72, 0.58)";
-      ctx.beginPath();
-      ctx.arc(0, 0, 14 + ringPulse * 6, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    };
-
-    const shouldAnimateFallback = () => sceneVisible && pageVisible;
-    const animateFallback = (now) => {
-      if (!shouldAnimateFallback()) {
+    const shouldAnimateScene = () => sceneVisible && pageVisible;
+    let isDisposed = false;
+    const animateScene = (now) => {
+      if (isDisposed) return;
+      if (!shouldAnimateScene()) {
         isAnimating = false;
         return;
       }
 
-      const time = now * 0.001;
-      const modeSpeed = mode === "flux" ? 1.62 : mode === "wire" ? 1.26 : 1;
-      const speed = (0.88 + intensity * 1.18) * modeSpeed;
+      const t = now * 0.001;
+      const pulse = 0.5 + 0.5 * Math.sin(t * 1.8);
+      const modeMultiplier = currentSceneMode === "flux" ? 1.55 : currentSceneMode === "wire" ? 1.22 : 1;
+      const speed = (0.85 + intensity * 1.15) * modeMultiplier;
 
-      ctx.clearRect(0, 0, width, height);
-      const gradient = ctx.createRadialGradient(
-        width * 0.52,
-        height * 0.45,
-        20,
-        width * 0.52,
-        height * 0.45,
-        width * 0.68
-      );
-      if (mode === "wire") {
-        gradient.addColorStop(0, "rgba(96, 188, 255, 0.24)");
-        gradient.addColorStop(0.55, "rgba(24, 89, 156, 0.11)");
-        gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-      } else {
-        gradient.addColorStop(0, "rgba(255, 151, 84, 0.24)");
-        gradient.addColorStop(0.56, "rgba(255, 128, 62, 0.08)");
-        gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-      }
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
+      root.position.x += (pointerTarget.x * 0.75 - root.position.x) * 0.045;
+      root.position.y += (-pointerTarget.y * 0.52 - root.position.y) * 0.045;
 
-      const baseRotY = time * 0.16 * speed + pointerTarget.x * 0.85;
-      const baseRotX = pointerTarget.y * 0.5 + Math.sin(time * 0.43) * 0.09;
-      const cosY = Math.cos(baseRotY);
-      const sinY = Math.sin(baseRotY);
-      const cosX = Math.cos(baseRotX);
-      const sinX = Math.sin(baseRotX);
+      coreMesh.rotation.x += 0.0035 * speed;
+      coreMesh.rotation.y += 0.0046 * speed;
+      coreMesh.rotation.z += 0.0016 * speed;
+      coreMesh.scale.setScalar(1 + pulse * 0.05 * intensity);
 
-      for (let i = 0; i < points.length; i += 1) {
-        const point = points[i];
-        point.z -= 0.028 * speed;
+      shellMesh.rotation.x -= 0.0013 * speed;
+      shellMesh.rotation.y += 0.0019 * speed;
+      shellMesh.scale.setScalar(1.02 + pulse * 0.035);
 
-        if (point.z < 0.3) {
-          point.x = (Math.random() - 0.5) * 10;
-          point.y = (Math.random() - 0.5) * 8;
-          point.z = 12;
-          point.seed = Math.random() * Math.PI * 2;
-          point.size = Math.random() * 1.4 + 0.45;
-        }
+      ringMesh.rotation.z += 0.002 * speed;
+      ringMesh.rotation.y = Math.sin(t * 0.5) * 0.4;
 
-        let x = point.x;
-        let y = point.y;
-        let z = point.z;
+      particleField.rotation.y += 0.0008 * speed;
+      particleField.rotation.x -= 0.00035 * speed;
+      particleMaterial.size = 0.032 + intensity * 0.02;
+      particleMaterial.opacity = 0.36 + intensity * 0.35;
 
-        if (mode === "flux") {
-          x += Math.cos(time * 1.5 + point.seed) * 0.45;
-          y += Math.sin(time * 1.25 + point.seed) * 0.32;
-        } else if (mode === "wire") {
-          x += Math.sin(time * 1.75 + point.seed) * 0.26;
-        }
-
-        const rx = x * cosY - z * sinY;
-        const rz = x * sinY + z * cosY;
-        const ry = y * cosX - rz * sinX;
-        const rz2 = y * sinX + rz * cosX + 8;
-        const perspective = 260 / rz2;
-
-        const sx = width * 0.52 + rx * perspective * 0.88;
-        const sy = height * 0.46 + ry * perspective * 0.88;
-        if (sx < -80 || sx > width + 80 || sy < -80 || sy > height + 80) continue;
-
-        const radius = Math.max(0.46, point.size * perspective * 0.03);
-        const alpha = Math.min(0.86, (1 / rz2) * (6.6 + intensity * 1.8));
-        if (mode === "wire") {
-          ctx.fillStyle = `rgba(151, 222, 255, ${alpha})`;
-        } else {
-          ctx.fillStyle = `rgba(255, 202, 160, ${alpha})`;
-        }
-
-        ctx.beginPath();
-        ctx.arc(sx, sy, radius, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      drawCore(time, speed);
-      rafId = requestAnimationFrame(animateFallback);
+      renderer.render(scene, camera);
+      rafId = requestAnimationFrame(animateScene);
     };
 
-    const startFallback = () => {
-      if (isAnimating || !shouldAnimateFallback()) return;
+    const startScene = () => {
+      if (isAnimating || isDisposed || !shouldAnimateScene()) return;
       isAnimating = true;
-      rafId = requestAnimationFrame(animateFallback);
+      rafId = requestAnimationFrame(animateScene);
     };
 
-    const stopFallback = () => {
+    const stopScene = () => {
       if (!isAnimating) return;
       cancelAnimationFrame(rafId);
       isAnimating = false;
     };
 
-    resizeCanvas();
-    setFallbackMode(mode, false);
-    window.addEventListener("resize", resizeCanvas);
+    resizeRenderer();
+    setSceneMode(currentSceneMode, false);
+    window.addEventListener("resize", resizeRenderer);
     if (container) {
-      const fallbackObserver = new IntersectionObserver(
+      const sceneObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             sceneVisible = entry.isIntersecting;
           });
-          if (shouldAnimateFallback()) {
-            startFallback();
+          if (shouldAnimateScene()) {
+            startScene();
           } else {
-            stopFallback();
+            stopScene();
           }
         },
         { threshold: 0.12 }
       );
-      fallbackObserver.observe(container);
+      sceneObserver.observe(container);
     }
 
     document.addEventListener("visibilitychange", () => {
       pageVisible = !document.hidden;
-      if (shouldAnimateFallback()) {
-        startFallback();
+      if (shouldAnimateScene()) {
+        startScene();
       } else {
-        stopFallback();
+        stopScene();
       }
     });
+
+    window.addEventListener("beforeunload", () => {
+      isDisposed = true;
+      stopScene();
+      renderer.dispose();
+      coreGeometry.dispose();
+      coreMaterial.dispose();
+      shellGeometry.dispose();
+      shellMaterial.dispose();
+      ringGeometry.dispose();
+      ringMaterial.dispose();
+      particleGeometry.dispose();
+      particleMaterial.dispose();
+    });
+  } else if (webglCanvas && !prefersReducedMotion && !lowEndDevice) {
+    const ctx = webglCanvas.getContext("2d");
+
+    if (ctx) {
+      const container = webglCanvas.parentElement;
+      const fallbackModes = ["pulse", "flux", "wire"];
+      const fallbackPointCount = lowEndDevice ? 280 : 520;
+      const points = Array.from({ length: fallbackPointCount }, () => ({
+        x: (Math.random() - 0.5) * 10,
+        y: (Math.random() - 0.5) * 8,
+        z: Math.random() * 12 + 1,
+        seed: Math.random() * Math.PI * 2,
+        size: Math.random() * 1.4 + 0.45,
+      }));
+
+      const pointerTarget = { x: 0, y: 0 };
+      let mode = "pulse";
+      let intensity = Number.parseInt(sceneIntensityInput?.value || "88", 10) / 100;
+      let width = 0;
+      let height = 0;
+      let sceneVisible = false;
+      let pageVisible = !document.hidden;
+      let rafId = 0;
+      let isAnimating = false;
+
+      const resizeCanvas = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = Math.max(260, container?.clientWidth || window.innerWidth);
+        height = Math.max(260, container?.clientHeight || Math.floor(window.innerHeight * 0.7));
+        webglCanvas.width = Math.floor(width * dpr);
+        webglCanvas.height = Math.floor(height * dpr);
+        webglCanvas.style.width = `${width}px`;
+        webglCanvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+
+      const updateFallbackModeStyles = (nextMode) => {
+        sceneModeButtons.forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.sceneMode === nextMode);
+        });
+        document.body.classList.toggle("scene-wire", nextMode === "wire");
+      };
+
+      const setFallbackMode = (nextMode, notify = true) => {
+        if (!fallbackModes.includes(nextMode)) return;
+        mode = nextMode;
+        updateFallbackModeStyles(nextMode);
+        if (notify) {
+          announceSceneToast(`3D mode: ${nextMode.toUpperCase()}`);
+        }
+      };
+
+      sceneModeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setFallbackMode(button.dataset.sceneMode || "pulse");
+        });
+      });
+
+      if (sceneIntensityInput) {
+        sceneIntensityInput.addEventListener("input", () => {
+          intensity = Number.parseInt(sceneIntensityInput.value || "88", 10) / 100;
+          announceSceneToast(`Intensity ${Math.round(intensity * 100)}%`);
+        });
+      }
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key.toLowerCase() !== "g") return;
+
+        const activeTag = document.activeElement?.tagName;
+        if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
+
+        const currentIndex = fallbackModes.indexOf(mode);
+        setFallbackMode(fallbackModes[(currentIndex + 1) % fallbackModes.length]);
+      });
+
+      if (!coarsePointer) {
+        window.addEventListener("pointermove", (event) => {
+          pointerTarget.x = (event.clientX / window.innerWidth) * 2 - 1;
+          pointerTarget.y = (event.clientY / window.innerHeight) * 2 - 1;
+        });
+      }
+
+      const drawCore = (time, speed) => {
+        const cx = width * 0.52 + pointerTarget.x * 34;
+        const cy = height * 0.46 - pointerTarget.y * 24;
+        const ringPulse = 0.82 + Math.sin(time * 2.2) * 0.11;
+        const ringRadius = 58 + ringPulse * 32 * intensity;
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(time * 0.45 * speed);
+        ctx.strokeStyle = mode === "wire" ? "rgba(148, 222, 255, 0.75)" : "rgba(255, 184, 122, 0.8)";
+        ctx.lineWidth = mode === "wire" ? 1.2 : 1.7;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, ringRadius, ringRadius * 0.55, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.rotate(time * 0.24 * speed);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, ringRadius * 0.66, ringRadius * 0.28, Math.PI / 2, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = mode === "wire" ? "rgba(114, 214, 255, 0.55)" : "rgba(255, 146, 72, 0.58)";
+        ctx.beginPath();
+        ctx.arc(0, 0, 14 + ringPulse * 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      };
+
+      const shouldAnimateFallback = () => sceneVisible && pageVisible;
+      const animateFallback = (now) => {
+        if (!shouldAnimateFallback()) {
+          isAnimating = false;
+          return;
+        }
+
+        const time = now * 0.001;
+        const modeSpeed = mode === "flux" ? 1.62 : mode === "wire" ? 1.26 : 1;
+        const speed = (0.88 + intensity * 1.18) * modeSpeed;
+
+        ctx.clearRect(0, 0, width, height);
+        const gradient = ctx.createRadialGradient(
+          width * 0.52,
+          height * 0.45,
+          20,
+          width * 0.52,
+          height * 0.45,
+          width * 0.68
+        );
+        if (mode === "wire") {
+          gradient.addColorStop(0, "rgba(96, 188, 255, 0.24)");
+          gradient.addColorStop(0.55, "rgba(24, 89, 156, 0.11)");
+          gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+        } else {
+          gradient.addColorStop(0, "rgba(255, 151, 84, 0.24)");
+          gradient.addColorStop(0.56, "rgba(255, 128, 62, 0.08)");
+          gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+        }
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        const baseRotY = time * 0.16 * speed + pointerTarget.x * 0.85;
+        const baseRotX = pointerTarget.y * 0.5 + Math.sin(time * 0.43) * 0.09;
+        const cosY = Math.cos(baseRotY);
+        const sinY = Math.sin(baseRotY);
+        const cosX = Math.cos(baseRotX);
+        const sinX = Math.sin(baseRotX);
+
+        for (let i = 0; i < points.length; i += 1) {
+          const point = points[i];
+          point.z -= 0.028 * speed;
+
+          if (point.z < 0.3) {
+            point.x = (Math.random() - 0.5) * 10;
+            point.y = (Math.random() - 0.5) * 8;
+            point.z = 12;
+            point.seed = Math.random() * Math.PI * 2;
+            point.size = Math.random() * 1.4 + 0.45;
+          }
+
+          let x = point.x;
+          let y = point.y;
+          let z = point.z;
+
+          if (mode === "flux") {
+            x += Math.cos(time * 1.5 + point.seed) * 0.45;
+            y += Math.sin(time * 1.25 + point.seed) * 0.32;
+          } else if (mode === "wire") {
+            x += Math.sin(time * 1.75 + point.seed) * 0.26;
+          }
+
+          const rx = x * cosY - z * sinY;
+          const rz = x * sinY + z * cosY;
+          const ry = y * cosX - rz * sinX;
+          const rz2 = y * sinX + rz * cosX + 8;
+          const perspective = 260 / rz2;
+
+          const sx = width * 0.52 + rx * perspective * 0.88;
+          const sy = height * 0.46 + ry * perspective * 0.88;
+          if (sx < -80 || sx > width + 80 || sy < -80 || sy > height + 80) continue;
+
+          const radius = Math.max(0.46, point.size * perspective * 0.03);
+          const alpha = Math.min(0.86, (1 / rz2) * (6.6 + intensity * 1.8));
+          if (mode === "wire") {
+            ctx.fillStyle = `rgba(151, 222, 255, ${alpha})`;
+          } else {
+            ctx.fillStyle = `rgba(255, 202, 160, ${alpha})`;
+          }
+
+          ctx.beginPath();
+          ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        drawCore(time, speed);
+        rafId = requestAnimationFrame(animateFallback);
+      };
+
+      const startFallback = () => {
+        if (isAnimating || !shouldAnimateFallback()) return;
+        isAnimating = true;
+        rafId = requestAnimationFrame(animateFallback);
+      };
+
+      const stopFallback = () => {
+        if (!isAnimating) return;
+        cancelAnimationFrame(rafId);
+        isAnimating = false;
+      };
+
+      resizeCanvas();
+      setFallbackMode(mode, false);
+      window.addEventListener("resize", resizeCanvas);
+      if (container) {
+        const fallbackObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              sceneVisible = entry.isIntersecting;
+            });
+            if (shouldAnimateFallback()) {
+              startFallback();
+            } else {
+              stopFallback();
+            }
+          },
+          { threshold: 0.12 }
+        );
+        fallbackObserver.observe(container);
+      }
+
+      document.addEventListener("visibilitychange", () => {
+        pageVisible = !document.hidden;
+        if (shouldAnimateFallback()) {
+          startFallback();
+        } else {
+          stopFallback();
+        }
+      });
+    } else if (sceneModeButtons.length) {
+      sceneModeButtons.forEach((button) => {
+        button.disabled = true;
+      });
+    }
   } else if (sceneModeButtons.length) {
     sceneModeButtons.forEach((button) => {
       button.disabled = true;
     });
   }
-} else if (sceneModeButtons.length) {
-  sceneModeButtons.forEach((button) => {
-    button.disabled = true;
-  });
-}
 }, 420);
 
 const textCarousel = document.getElementById("textCarousel");
@@ -1069,17 +1069,17 @@ const canvas = document.getElementById("modelCanvas");
 
 if (hero && stage && canvas) {
   const fallbackCtx = {
-    setTransform: () => {},
-    clearRect: () => {},
-    drawImage: () => {},
+    setTransform: () => { },
+    clearRect: () => { },
+    drawImage: () => { },
   };
   const ctx = canvas.getContext("2d", { alpha: true }) || fallbackCtx;
 
   const sourceFrames = 250;
-  const frameStride = lowEndDevice ? 3 : 2;
+  const frameStride = lowEndDevice ? 2 : 1;
   const totalFrames = Math.ceil(sourceFrames / frameStride);
-  const maxCachedFrames = lowEndDevice ? 32 : 64;
-  const preloadRadius = lowEndDevice ? 2 : 4;
+  const maxCachedFrames = lowEndDevice ? 32 : 120;
+  const preloadRadius = lowEndDevice ? 3 : 6;
   const idle = window.requestIdleCallback
     ? window.requestIdleCallback.bind(window)
     : (cb) => window.setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1);
@@ -1203,7 +1203,7 @@ if (hero && stage && canvas) {
     await loadFrame(0);
     drawFrame(0);
 
-    for (let i = 1; i < totalFrames; i += lowEndDevice ? 8 : 6) {
+    for (let i = 1; i < totalFrames; i += lowEndDevice ? 8 : 4) {
       loadFrame(i);
     }
 
@@ -1249,7 +1249,7 @@ if (hero && stage && canvas) {
 
   const onWheel = (event) => {
     if (!interactive) return;
-    targetFrame = clampFrame(targetFrame + event.deltaY * 0.065);
+    targetFrame = clampFrame(targetFrame + event.deltaY * 0.13);
   };
 
   hero.addEventListener("mouseenter", () => {
