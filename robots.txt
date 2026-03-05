@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sample-website-ten-delta.vercel.app/sitemap.xml

@@ -336,7 +336,7 @@ body.menu-open .menu-toggle span:nth-child(3) {
   padding: clamp(2rem, 3.4vw, 4.4rem) 0;
 }
 
-main > section:not(.hero-section) {
+main>section:not(.hero-section) {
   content-visibility: auto;
   contain-intrinsic-size: 840px;
 }
@@ -768,7 +768,6 @@ main section[id] {
   transform-origin: 60% 55%;
   transform: rotateX(var(--rx)) rotateY(var(--ry));
   transform-style: preserve-3d;
-  will-change: transform;
 }
 
 .model3d {
@@ -1276,7 +1275,7 @@ main section[id] {
   transition: transform 180ms ease;
 }
 
-.switch input:checked + span::before {
+.switch input:checked+span::before {
   transform: translateX(23px);
 }
 
@@ -1574,7 +1573,7 @@ main section[id] {
 }
 
 .magnetic {
-  will-change: transform;
+  transition: transform 200ms ease;
 }
 
 .back-to-top {
@@ -1613,11 +1612,13 @@ main section[id] {
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0.65;
   }
+
   50% {
     transform: translate(-50%, -50%) scale(1.06);
     opacity: 0.9;
@@ -1625,10 +1626,12 @@ main section[id] {
 }
 
 @keyframes modelFloat {
+
   0%,
   100% {
     transform: translateY(0) rotate(-0.3deg);
   }
+
   50% {
     transform: translateY(-9px) rotate(0.3deg);
   }
@@ -1639,6 +1642,7 @@ main section[id] {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1656,6 +1660,7 @@ main section[id] {
     opacity: 0;
     transform: translateX(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -1697,6 +1702,7 @@ main section[id] {
 }
 
 @media (max-width: 980px) {
+
   .desktop-nav,
   .header-cta {
     display: none;
@@ -1872,6 +1878,7 @@ main section[id] {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1895,5 +1902,3 @@ main section[id] {
     display: none;
   }
 }
-
-

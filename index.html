@@ -1,16 +1,58 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="LAYER-X Studio builds premium 3D commerce experiences, conversion systems, and enterprise-grade digital products." />
+  <meta name="description"
+    content="LAYER-X Studio builds premium 3D commerce experiences, conversion systems, and enterprise-grade digital products." />
+  <meta name="theme-color" content="#081016" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sample-website-ten-delta.vercel.app/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="LAYER-X Studio | Immersive Commerce Engineering" />
+  <meta property="og:description"
+    content="World-class 3D websites engineered for enterprise growth. Premium commerce experiences, conversion systems, and enterprise-grade digital products." />
+  <meta property="og:url" content="https://sample-website-ten-delta.vercel.app/" />
+  <meta property="og:image" content="https://sample-website-ten-delta.vercel.app/model.png" />
+  <meta property="og:site_name" content="LAYER-X Studio" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="LAYER-X Studio | Immersive Commerce Engineering" />
+  <meta name="twitter:description"
+    content="World-class 3D websites engineered for enterprise growth. Premium commerce experiences and conversion systems." />
+  <meta name="twitter:image" content="https://sample-website-ten-delta.vercel.app/model.png" />
+
   <title>LAYER-X Studio | Immersive Commerce Engineering</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 x2=%221%22 y1=%220%22 y2=%221%22%3E%3Cstop offset=%220%25%22 stop-color=%22%23ffd9be%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%23ff7f39%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%23081016%22/%3E%3Cpath d=%22M14 14h10v26h26v10H14z%22 fill=%22url(%23g)%22/%3E%3C/svg%3E" />
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 x2=%221%22 y1=%220%22 y2=%221%22%3E%3Cstop offset=%220%25%22 stop-color=%22%23ffd9be%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%23ff7f39%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%23081016%22/%3E%3Cpath d=%22M14 14h10v26h26v10H14z%22 fill=%22url(%23g)%22/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "LAYER-X Studio",
+    "url": "https://sample-website-ten-delta.vercel.app/",
+    "logo": "https://sample-website-ten-delta.vercel.app/model.png",
+    "description": "LAYER-X Studio builds premium 3D commerce experiences, conversion systems, and enterprise-grade digital products.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "hello@layerx.studio",
+      "contactType": "sales"
+    },
+    "sameAs": []
+  }
+  </script>
 </head>
+
 <body>
   <a class="skip-link" href="#mainContent">Skip to main content</a>
   <div class="aurora-bg" aria-hidden="true"></div>
@@ -31,7 +73,8 @@
 
     <div class="header-actions">
       <a class="header-cta" href="#contact">Book Strategy Call</a>
-      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobilePanel" aria-label="Open menu">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobilePanel"
+        aria-label="Open menu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -51,14 +94,15 @@
   <main id="mainContent">
     <section class="hero-section section-block" id="top">
       <div class="webgl-stage" aria-hidden="true">
-        <canvas id="webglScene"></canvas>
+        <canvas id="webglScene" width="1260" height="800"></canvas>
       </div>
 
       <div class="hero-intro">
         <p class="eyebrow">Immersive Commerce Stack</p>
         <h1>World-class 3D websites engineered for enterprise growth.</h1>
         <p class="hero-subcopy">
-          From cinematic landing experiences to full-funnel conversion architecture, LAYER-X helps ambitious brands ship launch-ready digital systems that look elite and perform under pressure.
+          From cinematic landing experiences to full-funnel conversion architecture, LAYER-X helps ambitious brands ship
+          launch-ready digital systems that look elite and perform under pressure.
         </p>
         <div class="hero-actions-row">
           <a class="btn btn-primary" href="#contact">Start a Project</a>
@@ -92,7 +136,7 @@
           <div class="vignette" aria-hidden="true"></div>
 
           <header class="topbar">
-            <h2 class="logo">LAYER-X // <span>NEURAL</span> <span>INTERFACE</span></h2>
+            <p class="logo">LAYER-X // <span>NEURAL</span> <span>INTERFACE</span></p>
             <div class="pager">
               <span>1/26</span>
               <div class="line"></div>
@@ -102,9 +146,14 @@
 
           <section class="left-copy">
             <div class="text-carousel" id="textCarousel" aria-label="Feature highlights carousel">
-              <p class="carousel-item is-active">Adaptive 3D product storytelling tuned for high-intent ecommerce audiences and premium launch campaigns.</p>
-              <p class="carousel-item" data-typewrite="true" data-fulltext="Real-time motion sequencing, conversion cues, and narrative layering designed to turn exploration into purchase decisions.">Real-time motion sequencing, conversion cues, and narrative layering designed to turn exploration into purchase decisions.</p>
-              <p class="carousel-item">Enterprise implementation standards with clear QA, analytics instrumentation, and measurable business outcomes.</p>
+              <p class="carousel-item is-active">Adaptive 3D product storytelling tuned for high-intent ecommerce
+                audiences and premium launch campaigns.</p>
+              <p class="carousel-item" data-typewrite="true"
+                data-fulltext="Real-time motion sequencing, conversion cues, and narrative layering designed to turn exploration into purchase decisions.">
+                Real-time motion sequencing, conversion cues, and narrative layering designed to turn exploration into
+                purchase decisions.</p>
+              <p class="carousel-item">Enterprise implementation standards with clear QA, analytics instrumentation, and
+                measurable business outcomes.</p>
             </div>
             <div class="icon-row">
               <button class="icon-btn" type="button" aria-label="Home">H</button>
@@ -118,7 +167,8 @@
             <div class="model-wrap">
               <div class="model">
                 <div id="model3d" class="model3d" aria-label="3D model from video">
-                  <canvas id="modelCanvas" class="model-canvas" aria-label="Rotating 3D frame model"></canvas>
+                  <canvas id="modelCanvas" class="model-canvas" aria-label="Rotating 3D frame model" width="980"
+                    height="1220"></canvas>
                   <button id="heroAddToCart" class="frame-cta" type="button">Configure Experience</button>
                 </div>
               </div>
@@ -128,10 +178,22 @@
           <aside class="specs">
             <h3>TECHNICAL SPECS</h3>
             <dl>
-              <div><dt>Optics</dt><dd>Dual 8K Micro-OLED</dd></div>
-              <div><dt>Logic</dt><dd>R1 Neural Engine</dd></div>
-              <div><dt>Motion</dt><dd>144Hz Low-Latency</dd></div>
-              <div><dt>Build</dt><dd>Lightweight Impact Shell</dd></div>
+              <div>
+                <dt>Optics</dt>
+                <dd>Dual 8K Micro-OLED</dd>
+              </div>
+              <div>
+                <dt>Logic</dt>
+                <dd>R1 Neural Engine</dd>
+              </div>
+              <div>
+                <dt>Motion</dt>
+                <dd>144Hz Low-Latency</dd>
+              </div>
+              <div>
+                <dt>Build</dt>
+                <dd>Lightweight Impact Shell</dd>
+              </div>
             </dl>
           </aside>
 
@@ -191,7 +253,8 @@
       <div class="section-head reveal">
         <p class="eyebrow">Platform Services</p>
         <h2>Everything required for a complete professional web presence.</h2>
-        <p>Design system, content structure, conversion architecture, and technical implementation delivered as one cohesive release unit.</p>
+        <p>Design system, content structure, conversion architecture, and technical implementation delivered as one
+          cohesive release unit.</p>
       </div>
       <div class="cap-grid">
         <article class="cap-card reveal">
@@ -228,16 +291,20 @@
       </div>
 
       <div class="tab-row reveal" role="tablist" aria-label="Showcase tabs">
-        <button class="tab-btn is-active" type="button" role="tab" aria-selected="true" aria-controls="tab-commerce" data-tab="commerce">Commerce</button>
-        <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-saas" data-tab="saas">SaaS</button>
-        <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-enterprise" data-tab="enterprise">Enterprise</button>
+        <button class="tab-btn is-active" type="button" role="tab" aria-selected="true" aria-controls="tab-commerce"
+          data-tab="commerce">Commerce</button>
+        <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-saas"
+          data-tab="saas">SaaS</button>
+        <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-enterprise"
+          data-tab="enterprise">Enterprise</button>
       </div>
 
       <div class="tab-panels">
         <article class="tab-panel is-active reveal" id="tab-commerce" role="tabpanel" aria-label="Commerce track">
           <div>
             <h3>Premium Ecommerce Stack</h3>
-            <p>Product storytelling, rapid buying journeys, and motion systems designed for high-ticket consumer confidence.</p>
+            <p>Product storytelling, rapid buying journeys, and motion systems designed for high-ticket consumer
+              confidence.</p>
             <ul class="panel-list">
               <li>Interactive hero + product configurator</li>
               <li>Social proof and comparison architecture</li>
@@ -245,14 +312,16 @@
             </ul>
           </div>
           <div class="panel-media video-media">
-            <video src="Untitled design.mp4" muted loop playsinline preload="metadata" poster="model.png"></video>
+            <video src="Untitled design.mp4" muted loop playsinline preload="none" poster="model.png"
+              aria-label="Commerce product showcase video" width="640" height="360"></video>
           </div>
         </article>
 
         <article class="tab-panel reveal" id="tab-saas" role="tabpanel" aria-label="SaaS track" hidden>
           <div>
             <h3>Product-Led SaaS Presence</h3>
-            <p>Clear feature narratives, role-based journeys, and trial onboarding flows that shorten enterprise sales cycles.</p>
+            <p>Clear feature narratives, role-based journeys, and trial onboarding flows that shorten enterprise sales
+              cycles.</p>
             <ul class="panel-list">
               <li>Modular pages for product, docs, and pricing</li>
               <li>Funnel-aware CTA framework</li>
@@ -265,7 +334,8 @@
         <article class="tab-panel reveal" id="tab-enterprise" role="tabpanel" aria-label="Enterprise track" hidden>
           <div>
             <h3>Enterprise Transformation Site</h3>
-            <p>Multi-stakeholder communication stacks built for procurement confidence, governance clarity, and scale.</p>
+            <p>Multi-stakeholder communication stacks built for procurement confidence, governance clarity, and scale.
+            </p>
             <ul class="panel-list">
               <li>Service blueprint and capability mapping</li>
               <li>Security and compliance communication</li>
@@ -293,7 +363,8 @@
         </li>
         <li class="timeline-item reveal">
           <h3>03. Engineering Build</h3>
-          <p>Frontend implementation, integration-ready structures, performance optimization, and accessibility checks.</p>
+          <p>Frontend implementation, integration-ready structures, performance optimization, and accessibility checks.
+          </p>
         </li>
         <li class="timeline-item reveal">
           <h3>04. Launch & Optimization</h3>
@@ -320,7 +391,8 @@
       <div class="pricing-grid">
         <article class="price-card reveal">
           <h3>Launch</h3>
-          <p class="price-line"><span class="currency">$</span><span class="price-value" data-monthly="1490" data-yearly="1190">1490</span><span class="period">/mo</span></p>
+          <p class="price-line"><span class="currency">$</span><span class="price-value" data-monthly="1490"
+              data-yearly="1190">1490</span><span class="period">/mo</span></p>
           <ul>
             <li>Premium single-page website</li>
             <li>Conversion messaging architecture</li>
@@ -332,7 +404,8 @@
         <article class="price-card featured reveal">
           <p class="badge">Most Popular</p>
           <h3>Scale</h3>
-          <p class="price-line"><span class="currency">$</span><span class="price-value" data-monthly="2990" data-yearly="2390">2990</span><span class="period">/mo</span></p>
+          <p class="price-line"><span class="currency">$</span><span class="price-value" data-monthly="2990"
+              data-yearly="2390">2990</span><span class="period">/mo</span></p>
           <ul>
             <li>Full multi-section professional site</li>
             <li>3D experiences + advanced motion</li>
@@ -343,7 +416,8 @@
 
         <article class="price-card reveal">
           <h3>Enterprise</h3>
-          <p class="price-line"><span class="currency">$</span><span class="price-value" data-monthly="6490" data-yearly="5190">6490</span><span class="period">/mo</span></p>
+          <p class="price-line"><span class="currency">$</span><span class="price-value" data-monthly="6490"
+              data-yearly="5190">6490</span><span class="period">/mo</span></p>
           <ul>
             <li>Multi-brand architecture</li>
             <li>Governance and integration workflows</li>
@@ -363,12 +437,14 @@
       <div class="testimonial-slider reveal">
         <div class="testimonial-track" id="testimonialTrack">
           <article class="testimonial-card is-active">
-            <p>"The visual quality was elite, but what impressed us most was the conversion architecture and launch discipline."</p>
+            <p>"The visual quality was elite, but what impressed us most was the conversion architecture and launch
+              discipline."</p>
             <h3>Nina Patel</h3>
             <span>VP Growth, Northgrid</span>
           </article>
           <article class="testimonial-card">
-            <p>"LAYER-X turned our static pages into an immersive sales engine. Engagement and demo requests jumped in two weeks."</p>
+            <p>"LAYER-X turned our static pages into an immersive sales engine. Engagement and demo requests jumped in
+              two weeks."</p>
             <h3>Omar Reynolds</h3>
             <span>Head of Product Marketing, Vexa Health</span>
           </article>
@@ -402,7 +478,8 @@
             How long does a full professional build usually take?
           </button>
           <div class="faq-answer" hidden>
-            <p>Typical delivery ranges from 2 to 6 weeks based on scope, content readiness, and integration complexity.</p>
+            <p>Typical delivery ranges from 2 to 6 weeks based on scope, content readiness, and integration complexity.
+            </p>
           </div>
         </article>
         <article class="faq-item">
@@ -410,7 +487,8 @@
             Can this integrate with CRM, analytics, and ad tracking?
           </button>
           <div class="faq-answer" hidden>
-            <p>Yes. The architecture supports analytics events, CRM handoff, campaign tracking, and marketing tooling.</p>
+            <p>Yes. The architecture supports analytics events, CRM handoff, campaign tracking, and marketing tooling.
+            </p>
           </div>
         </article>
         <article class="faq-item">
@@ -418,7 +496,8 @@
             Do you optimize for mobile and accessibility?
           </button>
           <div class="faq-answer" hidden>
-            <p>Every release includes responsive QA, keyboard-friendly interaction patterns, and accessibility validation.</p>
+            <p>Every release includes responsive QA, keyboard-friendly interaction patterns, and accessibility
+              validation.</p>
           </div>
         </article>
         <article class="faq-item">
@@ -426,7 +505,8 @@
             Do you offer post-launch support and experimentation?
           </button>
           <div class="faq-answer" hidden>
-            <p>Yes. Ongoing optimization includes testing plans, content iteration, and conversion-focused enhancement sprints.</p>
+            <p>Yes. Ongoing optimization includes testing plans, content iteration, and conversion-focused enhancement
+              sprints.</p>
           </div>
         </article>
       </div>
@@ -455,7 +535,8 @@
           </label>
           <label>
             Project Goal
-            <textarea name="message" rows="5" placeholder="What result do you want from this website?" required></textarea>
+            <textarea name="message" rows="5" placeholder="What result do you want from this website?"
+              required></textarea>
           </label>
           <button type="submit">Submit Request</button>
           <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
@@ -484,9 +565,8 @@
 
   <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">Top</button>
 
-  <script src="https://unpkg.com/three@0.164.1/build/three.min.js"></script>
-  <script src="script.js"></script>
+  <script src="https://unpkg.com/three@0.164.1/build/three.min.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
+
 </html>
-
-
